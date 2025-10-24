@@ -1,40 +1,21 @@
-// Initial available seats
-let availableSeats = 120;
+// SPA Navigation Script
+const links = document.querySelectorAll("nav a");
+const sections = document.querySelectorAll("section");
 
-// Get form and elements
-const form = document.getElementById("bookingForm");
-const seatsLabel = document.getElementById("seats");
-const nameInput = document.getElementById("name");
-const ticketsInput = document.getElementById("tickets");
+links.forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const target = link.getAttribute("href").substring(1);
 
-// Handle form submission
-form.addEventListener("submit", function(event) {
-  event.preventDefault(); // stop page refresh
+    // Remove active from all
+    sections.forEach(section => section.classList.remove("active"));
+    links.forEach(nav => nav.classList.remove("active"));
 
-  let userName = nameInput.value.trim();
-  let ticketsRequested = parseInt(ticketsInput.value);
+    // Add active to clicked
+    document.getElementById(target).classList.add("active");
+    link.classList.add("active");
 
-  if (userName === "") {
-    alert("Please enter your name.");
-    return;
-  }
-
-  if (isNaN(ticketsRequested) || ticketsRequested <= 0) {
-    alert("Please enter a valid number of tickets.");
-    return;
-  }
-
-  if (ticketsRequested > availableSeats) {
-    alert("Not enough seats available!");
-    return;
-  }
-
-  // Deduct booked seats
-  availableSeats -= ticketsRequested;
-  seatsLabel.textContent = "Seats Available: " + availableSeats;
-
-  alert("Booking Confirmed!\nName: " + userName + "\nTickets: " + ticketsRequested);
-
-  // Reset form
-  form.reset();
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 });
